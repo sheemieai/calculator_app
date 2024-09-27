@@ -46,6 +46,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final String zeroImg = "lib/img/0.png";
   final String divideImg = "lib/img/divide.png";
   final String equalImg = "lib/img/=.png";
+  final String numberSymbolImg = "lib/img/+_-.png";
+  final String emptyImg = "lib/img/empty.png";
   String number1 = "";
   String number2 = "";
   String showEquationString = "";
@@ -64,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void getFirstNumber(final int inputFirstNumber) {
     setState(() {
-      number1 = inputFirstNumber.toString();
+      number1 += inputFirstNumber.toString();
       showEquationString = number1;
       mathSymbol = "";
       number2 = "";
@@ -74,16 +76,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void getMathSymbol(final String inputMathSymbol) {
     setState(() {
-      if (number1.isEmpty) {
+      if (number1.isEmpty || number2.isNotEmpty) {
         return;
       }
 
-      if (mathSymbol.isNotEmpty && showEquationString.endsWith(" ")) {
-        showEquationString = showEquationString.substring(0, 2) + inputMathSymbol
+      if (mathSymbol.isNotEmpty) {
+        showEquationString = showEquationString.substring(
+            0, showEquationString.length - mathSymbol.length - 1) + inputMathSymbol
             + " ";
       } else {
-        showEquationString = showEquationString.substring(0, 1) + " " +
-            inputMathSymbol + " ";
+        showEquationString = "$number1 $inputMathSymbol ";
       }
 
       mathSymbol = inputMathSymbol;
@@ -97,10 +99,9 @@ class _MyHomePageState extends State<MyHomePage> {
         return;
       }
 
-      showEquationString = showEquationString.substring(0, 4) +
-          inputSecondNumber.toString();
+      number2 += inputSecondNumber.toString();
 
-      number2 = inputSecondNumber.toString();
+      showEquationString = "$number1 $mathSymbol $number2";
     });
   }
 
@@ -120,29 +121,48 @@ class _MyHomePageState extends State<MyHomePage> {
       switch (mathSymbol) {
         case "+":
           answer = num1 + num2;
-          finalAnswerString = answer.toString();
+          finalAnswerString = "Answer: " + answer.toString();
+          resetCalculatorForEqual();
           return;
         case "-":
           answer = num1 - num2;
-          finalAnswerString = answer.toString();
+          finalAnswerString = "Answer: " + answer.toString();
+          resetCalculatorForEqual();
           return;
         case "x":
           answer = num1 * num2;
-          finalAnswerString = answer.toString();
+          finalAnswerString = "Answer: " + answer.toString();
+          resetCalculatorForEqual();
           return;
         case "÷":
-          if (num2 == 0) {
+          if (num1 == 0 && num2 == 0) {
+            finalAnswerString = "Answer: " + num1.toString();
+            resetCalculatorForEqual();
+            return;
+          } else if (num2 == 0) {
             finalAnswerString = "Cannot divide by 0";
+            resetCalculatorForEqual();
             return;
           } else {
             double result = num1 / num2;
-            finalAnswerString = result.toString();
+            finalAnswerString = "Answer: " + result.toString();
+            resetCalculatorForEqual();
             return;
           }
         default:
           finalAnswerString = "Calculation Error";
+          resetCalculatorForEqual();
           return;
       }
+    });
+  }
+
+  void resetCalculatorForEqual() {
+    setState(() {
+      number1 = "";
+      number2 = "";
+      showEquationString = "";
+      mathSymbol = "";
     });
   }
 
@@ -157,6 +177,78 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text(
+              finalAnswerString,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 24.0,
+              ),
+            ),
+            SizedBox(height: 30.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                GestureDetector(
+                  child: Container(
+                    width: 50.0,
+                    height: 50.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage(emptyImg),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 20.0),
+                GestureDetector(
+                  child: Container(
+                    width: 50.0,
+                    height: 50.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage(emptyImg),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 20.0),
+                GestureDetector(
+                  onTap: () {
+                    // function
+                  },
+                  child: Container(
+                    width: 50.0,
+                    height: 50.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage(numberSymbolImg),
+                        fit: BoxFit.contain,
+                      ),
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 20.0),
+                GestureDetector(
+                  child: Container(
+                    width: 50.0,
+                    height: 50.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage(emptyImg),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ),
+              ]
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -504,14 +596,6 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(height: 20.0),
             Text(
               showEquationString,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24.0,
-              ),
-            ),
-            SizedBox(height: 20.0),
-            Text(
-              finalAnswerString,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24.0,
