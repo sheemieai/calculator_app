@@ -54,6 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String mathSymbol = "";
   String finalAnswerString = "";
 
+  // Reset calculator
   void resetCalculator() {
     setState(() {
       number1 = "";
@@ -64,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  // Get the first operand
   void getFirstNumber(final int inputFirstNumber) {
     setState(() {
       number1 += inputFirstNumber.toString();
@@ -74,6 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  // Get the operator symbol
   void getMathSymbol(final String inputMathSymbol) {
     setState(() {
       if (number1.isEmpty || number2.isNotEmpty) {
@@ -93,6 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  // Get the second operand
   void getSecondNumber(final int inputSecondNumber) {
     setState(() {
       if (number1.isEmpty || mathSymbol.isEmpty) {
@@ -105,6 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  // Calculate the math equation with the equal button
   void calculateMathEquation() {
     if (number1.isEmpty || mathSymbol.isEmpty || number2.isEmpty) {
       setState(() {
@@ -157,6 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  // Reset the calculator if you use the equal button
   void resetCalculatorForEqual() {
     setState(() {
       number1 = "";
@@ -166,6 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  // Change the operand to negative or positive
   void changeNumberSymbol() {
     setState(() {
       if (number1.isEmpty) {
@@ -203,6 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            // Row 1 (Answer Display)
             Text(
               finalAnswerString,
               style: const TextStyle(
@@ -211,6 +219,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             SizedBox(height: 30.0),
+            // Row 2 (Positive/Negative button)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -275,6 +284,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ]
             ),
+            // Row 3 (7,8,9,x)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -363,6 +373,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
+            // Row 4 (4,5,6,-)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -451,6 +462,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
+            // Row 5 (1,2,3,+)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -539,6 +551,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
+            // Row 5 (AC,0,÷,=)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
