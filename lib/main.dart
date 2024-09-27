@@ -166,6 +166,32 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void changeNumberSymbol() {
+    setState(() {
+      if (number1.isEmpty) {
+        return;
+      } else if (mathSymbol.isNotEmpty && number2.isEmpty) {
+        return;
+      }
+
+      if (number1.isNotEmpty && number2.isNotEmpty) {
+        if (number2.startsWith("-")) {
+          number2 = number2.substring(1);
+        } else {
+          number2 = "-$number2";
+        }
+        showEquationString = "$number1 $mathSymbol $number2";
+      } else if (number1.isNotEmpty) {
+        if (number1.startsWith("-")) {
+          number1 = number1.substring(1);
+        } else {
+          number1 = "-$number1";
+        }
+        showEquationString = number1;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -218,7 +244,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(width: 20.0),
                 GestureDetector(
                   onTap: () {
-                    // function
+                    changeNumberSymbol();
                   },
                   child: Container(
                     width: 50.0,
