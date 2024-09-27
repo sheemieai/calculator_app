@@ -50,6 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String number2 = "";
   String showEquationString = "";
   String mathSymbol = "";
+  String finalAnswerString = "";
 
   void resetCalculator() {
     setState(() {
@@ -57,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
       number2 = "";
       showEquationString = "";
       mathSymbol = "";
+      finalAnswerString = "";
     });
   }
 
@@ -66,12 +68,13 @@ class _MyHomePageState extends State<MyHomePage> {
       showEquationString = number1;
       mathSymbol = "";
       number2 = "";
+      finalAnswerString = "";
     });
   }
 
   void getMathSymbol(final String inputMathSymbol) {
     setState(() {
-      if (number1.toString().isEmpty) {
+      if (number1.isEmpty) {
         return;
       }
 
@@ -90,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void getSecondNumber(final int inputSecondNumber) {
     setState(() {
-      if (number1.toString().isEmpty || mathSymbol.isEmpty) {
+      if (number1.isEmpty || mathSymbol.isEmpty) {
         return;
       }
 
@@ -98,6 +101,48 @@ class _MyHomePageState extends State<MyHomePage> {
           inputSecondNumber.toString();
 
       number2 = inputSecondNumber.toString();
+    });
+  }
+
+  void calculateMathEquation() {
+    if (number1.isEmpty || mathSymbol.isEmpty || number2.isEmpty) {
+      setState(() {
+        finalAnswerString = "Input Error";
+      });
+      return;
+    }
+
+    int num1 = int.parse(number1);
+    int num2 = int.parse(number2);
+    int answer = 0;
+
+    setState(() {
+      switch (mathSymbol) {
+        case "+":
+          answer = num1 + num2;
+          finalAnswerString = answer.toString();
+          return;
+        case "-":
+          answer = num1 - num2;
+          finalAnswerString = answer.toString();
+          return;
+        case "x":
+          answer = num1 * num2;
+          finalAnswerString = answer.toString();
+          return;
+        case "÷":
+          if (num2 == 0) {
+            finalAnswerString = "Cannot divide by 0";
+            return;
+          } else {
+            double result = num1 / num2;
+            finalAnswerString = result.toString();
+            return;
+          }
+        default:
+          finalAnswerString = "Calculation Error";
+          return;
+      }
     });
   }
 
@@ -117,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    if (number1.isEmpty) {
+                    if (mathSymbol.isEmpty) {
                       getFirstNumber(7);
                     } else {
                       getSecondNumber(7);
@@ -139,7 +184,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(width: 20.0),
                 GestureDetector(
                   onTap: () {
-                    if (number1.isEmpty) {
+                    if (mathSymbol.isEmpty) {
                       getFirstNumber(8);
                     } else {
                       getSecondNumber(8);
@@ -161,7 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(width: 20.0),
                 GestureDetector(
                   onTap: () {
-                    if (number1.isEmpty) {
+                    if (mathSymbol.isEmpty) {
                       getFirstNumber(9);
                     } else {
                       getSecondNumber(9);
@@ -205,7 +250,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    if (number1.isEmpty) {
+                    if (mathSymbol.isEmpty) {
                       getFirstNumber(4);
                     } else {
                       getSecondNumber(4);
@@ -227,7 +272,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(width: 20.0),
                 GestureDetector(
                   onTap: () {
-                    if (number1.isEmpty) {
+                    if (mathSymbol.isEmpty) {
                       getFirstNumber(5);
                     } else {
                       getSecondNumber(5);
@@ -249,7 +294,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(width: 20.0),
                 GestureDetector(
                   onTap: () {
-                    if (number1.isEmpty) {
+                    if (mathSymbol.isEmpty) {
                       getFirstNumber(6);
                     } else {
                       getSecondNumber(6);
@@ -293,7 +338,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    if (number1.isEmpty) {
+                    if (mathSymbol.isEmpty) {
                       getFirstNumber(1);
                     } else {
                       getSecondNumber(1);
@@ -315,7 +360,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(width: 20.0),
                 GestureDetector(
                   onTap: () {
-                    if (number1.isEmpty) {
+                    if (mathSymbol.isEmpty) {
                       getFirstNumber(2);
                     } else {
                       getSecondNumber(2);
@@ -337,7 +382,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(width: 20.0),
                 GestureDetector(
                   onTap: () {
-                    if (number1.isEmpty) {
+                    if (mathSymbol.isEmpty) {
                       getFirstNumber(3);
                     } else {
                       getSecondNumber(3);
@@ -399,7 +444,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(width: 20.0),
                 GestureDetector(
                   onTap: () {
-                    if (number1.isEmpty) {
+                    if (mathSymbol.isEmpty) {
                       getFirstNumber(0);
                     } else {
                       getSecondNumber(0);
@@ -439,7 +484,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(width: 20.0),
                 GestureDetector(
                   onTap: () {
-                    // function
+                    calculateMathEquation();
                   },
                   child: Container(
                     width: 50.0,
@@ -459,6 +504,14 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(height: 20.0),
             Text(
               showEquationString,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24.0,
+              ),
+            ),
+            SizedBox(height: 20.0),
+            Text(
+              finalAnswerString,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24.0,
