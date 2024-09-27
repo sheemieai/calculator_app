@@ -632,6 +632,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
+            // Row 6 (Equation)
             SizedBox(height: 20.0),
             Text(
               showEquationString,
